@@ -8,7 +8,7 @@ logger.setLevel(logging.DEBUG)
 fh = logging.FileHandler("out.log")
 fh.setLevel(logging.DEBUG)
 logger.addHandler(fh)
-error = 0.1
+error = 0.4
 
 
 def binomial(p):
