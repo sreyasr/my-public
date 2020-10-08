@@ -4,9 +4,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler('p2.log')
+fh = logging.FileHandler("p2.log")
 fh.setLevel(logging.DEBUG)
 logger.addHandler(fh)
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -14,11 +15,10 @@ def main():
     args = parser.parse_args()
     positions = None
     colors = None
-    with open(args.input_file, 'r') as f:
+    with open(args.input_file, "r") as f:
         lines = f.readlines()
         positions = int(lines[0])
         colors = lines[1].split()
-
 
     dic = dict()
 
@@ -32,18 +32,22 @@ def main():
     while True:
         print(*list(map(lambda x: colors[x], X)), sep=" ")
 
-        inp = input()
+        inp = None
+
         while inp is None:
-            inp = input()
+            try:
+                inp = input()
+            except EOFError:
+                pass
 
         if inp.upper() == "YES":
             return
-        logger.info("inp: %r" % inp )
+        logger.info("inp: %r" % inp)
         correct_pos, correct_num = list(map(int, inp.strip().split()))
         g = (correct_pos, correct_num)
         logger.info("g: %r, %r" % (correct_pos, correct_num))
         X = player.send(g)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

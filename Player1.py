@@ -1,15 +1,34 @@
 import subprocess
 import os
 import logging
+import random
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler('out.log')
+fh = logging.FileHandler("out.log")
 fh.setLevel(logging.DEBUG)
 logger.addHandler(fh)
+error = 0.1
+
+
+def binomial(p):
+    return random.uniform(0, 1) < p
+
 
 input_file = "input.txt"
-RR = ["green", "blue", "yellow", "blue", "green", "red", "white", "yellow", "white", "white"]
+RR = [
+    "green",
+    "blue",
+    "yellow",
+    "blue",
+    "green",
+    "red",
+    "white",
+    "yellow",
+    "white",
+    "white",
+]
+
 
 def get_correct_pos(li):
     count = 0
@@ -17,6 +36,7 @@ def get_correct_pos(li):
         if RR[i] == li[i]:
             count += 1
     return count
+
 
 def get_correct_num(li):
     s = set(li)
@@ -27,7 +47,9 @@ def get_correct_num(li):
 
 
 def main():
-    proc = subprocess.Popen(["python3", "p2.py", input_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    proc = subprocess.Popen(
+        ["python3", "p2.py", input_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE
+    )
     while True:
         recv = ""
         while recv == "" or recv[-1] != "\n":
@@ -43,11 +65,17 @@ def main():
             os.write(proc.stdin.fileno(), b"YES")
             return
 
-        xtr = '%s %s\n' % (correct_pos, correct_num)
-        logger.info("P1: %s" % xtr[:-1])
+        if binomial(error):
+            correct_num = random.randint(0, len(RR))
+            correct_pos = random.randint(0, correct_num)
+            xtr = "%s %s\n" % (correct_pos, correct_num)
+            logger.info("P1: %s  [INCORRECT]" % xtr[:-1])
+        else:
+            xtr = "%s %s\n" % (correct_pos, correct_num)
+            logger.info("P1: %s" % xtr[:-1])
+
         os.write(proc.stdin.fileno(), xtr.encode())
-            
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
-

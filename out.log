@@ -1,18 +1,24 @@
 P2: green green green green green green green green green green
 P1: 2 2
-P2: yellow yellow yellow white green yellow green yellow yellow yellow
+P2: blue yellow red yellow yellow yellow yellow green yellow green
+P1: 1 2  [INCORRECT]
+P2: white white white white green white white white white green
 P1: 3 5
-P2: green yellow green white red red red red white yellow
+P2: blue red yellow yellow yellow green yellow yellow yellow red
+P1: 2 5
+P2: yellow white red blue blue green red green green red
+P1: 1 7
+P2: red green white red red green white red yellow yellow
+P1: 1 7
+P2: green red yellow red green yellow green green red green
+P1: 3 5
+P2: yellow red yellow red white red blue blue blue white
 P1: 3 7
-P2: blue yellow red white white green white blue green yellow
-P1: 1 10
-P2: white yellow green blue blue red green white yellow white
+P2: white red green red blue white yellow white red white
+P1: 1 7
+P2: green blue yellow white white white red blue yellow green
 P1: 3 10
-P2: green yellow white red blue white green yellow white blue
-P1: 3 10
-P2: yellow white green blue white yellow green red white blue
-P1: 2 10
-P2: white green green white red white blue yellow yellow blue
+P2: yellow red white white yellow blue green blue white green
 P1: 1 10
 P2: green blue yellow blue green red white yellow white white
 P1: YES

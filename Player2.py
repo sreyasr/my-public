@@ -3,15 +3,48 @@ from z3 import *
 import functools
 import argparse
 import logging
+from collections import namedtuple
+
+import random
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler('Player2.log')
+fh = logging.FileHandler("Player2.log")
 fh.setLevel(logging.DEBUG)
 logger.addHandler(fh)
 
 
+def binomial(p):
+    return random.uniform(0, 1) < p
+
+
+class ClauseHistory:
+    def __init__(self):
+        self.hist_clause = []
+        self.usage_clause = []
+
+    def __getitem__(self, key):
+        return self.usage_clause[key][0]
+
+    def append(self, obj, level):
+        self.usage_clause.append([obj, level, 1])
+
+    def __len__(self):
+        return len(self.usage_clause)
+
+    def update_confidence(self, *args):
+        for i in args:
+            self.usage_clause[i][2] /= 2
+
+    def get_confidence(self, i):
+        return binomial(self.usage_clause[i][3])
+
+    def pop(self):
+        self.hist_clause.append(self.usage_clause.pop())
+
+
 # Suppose the real positions and colors that we want to find be RR
+
 
 def min2(a, b):
     return If(a > b, b, a)
@@ -42,23 +75,40 @@ def player(positions, colors):
         for j in range(positions + 1)
     ]
 
-    C = []
-    C.append(And(*(cond0 + cond1 + cond2 + cond3)))
+    C = ClauseHistory()
+    level = 0
+    C.append(And(*(cond0 + cond1 + cond2 + cond3)), level)
 
     s = Solver()
+    s.set(unsat_core=True)
+    s.add(C[-1])
+
     while True:
-        N = len(C) - 1
-        s.add(C[-1])
         if s.check() == unsat:
-            raise NotImplementedError
+            unsat_core = s.unsat_core()
+            unsat_core_level = list(
+                map(lambda x: int(str(x).split("_")[-1]), unsat_core)
+            )
+            for i in range(len(C) - min(unsat_core_level)):
+                s.pop()
+                C.pop()
+            min_unsat_core = min(unsat_core_level)
+            level = len(C) - 1
+
+            # C.update_confidence(*unsat_core_level)
+            # for i in range(min_unsat_core, len(C)):
+            #     s.push()
+            #     s.assert_and_track(C[i], "C_%s" % i)
+
+            continue
         else:
-            X = []
-            for i in range(positions):
-                for j in range(colors):
-                    if s.model()[p[i][j]].as_long() == 1:
-                        X.append(j)
-                        break
-            inp = (yield X)
+            X = [
+                j
+                for i in range(positions)
+                for j in range(colors)
+                if s.model()[p[i][j]].as_long() == 1
+            ]
+            inp = yield X
 
             correct_pos, correct_num = inp
 
@@ -68,7 +118,10 @@ def player(positions, colors):
                 functools.reduce(lambda x, y: x + y, cond1) == correct_pos,
                 functools.reduce(lambda x, y: x + y, cond2) == correct_num,
             )
-            C.append(cond3)
+            level += 1
+            C.append(cond3, level)
+            s.push()
+            s.assert_and_track(C[-1], "C_%s" % level)
 
 
 def main():
