@@ -26,21 +26,33 @@ class ClauseHistory:
     def __getitem__(self, key):
         return self.usage_clause[key][0]
 
-    def append(self, obj, level):
-        self.usage_clause.append([obj, level, 1])
+    def append(self, obj):
+        self.usage_clause.append((obj, 1))
 
     def __len__(self):
         return len(self.usage_clause)
 
     def update_confidence(self, *args):
         for i in args:
-            self.usage_clause[i][2] /= 2
-
-    def get_confidence(self, i):
-        return binomial(self.usage_clause[i][3])
+            m = self.usage_clause[i]
+            self.usage_clause[i] = (m[0], m[1]/2)
 
     def pop(self):
         self.hist_clause.append(self.usage_clause.pop())
+
+    def additional_clauses(self, s, level):
+        for i in self.hist_clause.copy():
+            if i[1] < 0.20:
+                self.hist_clause.remove(i)
+                continue
+            if binomial(i[1]):
+                self.usage_clause.append(i)
+                level += 1
+                s.push()
+                s.assert_and_track(self.usage_clause[-1][0], "C_%s" % level)
+                self.hist_clause.remove(i)
+
+        return level
 
 
 # Suppose the real positions and colors that we want to find be RR
@@ -77,7 +89,7 @@ def player(positions, colors):
 
     C = ClauseHistory()
     level = 0
-    C.append(And(*(cond0 + cond1 + cond2 + cond3)), level)
+    C.append(And(*(cond0 + cond1 + cond2 + cond3)))
 
     s = Solver()
     s.set(unsat_core=True)
@@ -89,17 +101,16 @@ def player(positions, colors):
             unsat_core_level = list(
                 map(lambda x: int(str(x).split("_")[-1]), unsat_core)
             )
+            C.update_confidence(*unsat_core_level)
             for i in range(len(C) - min(unsat_core_level)):
                 s.pop()
                 C.pop()
-            min_unsat_core = min(unsat_core_level)
             level = len(C) - 1
-
-            # C.update_confidence(*unsat_core_level)
-            # for i in range(min_unsat_core, len(C)):
-            #     s.push()
-            #     s.assert_and_track(C[i], "C_%s" % i)
-
+            level = C.additional_clauses(s, level)
+            min_unsat_core = min(unsat_core_level)
+            if level != len(C) - 1:
+                logger.debug("ValueError: %s %s" % (level, len(C)))
+                raise ValueError
             continue
         else:
             X = [
@@ -119,7 +130,7 @@ def player(positions, colors):
                 functools.reduce(lambda x, y: x + y, cond2) == correct_num,
             )
             level += 1
-            C.append(cond3, level)
+            C.append(cond3)
             s.push()
             s.assert_and_track(C[-1], "C_%s" % level)
 
