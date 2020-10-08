@@ -4,11 +4,14 @@ import functools
 import argparse
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+fh = logging.FileHandler('Player2.log')
+fh.setLevel(logging.DEBUG)
+logger.addHandler(fh)
 
 
 # Suppose the real positions and colors that we want to find be RR
-
 
 def min2(a, b):
     return If(a > b, b, a)
@@ -55,20 +58,17 @@ def player(positions, colors):
                     if s.model()[p[i][j]].as_long() == 1:
                         X.append(j)
                         break
-            print(*X, sep=", ")
+            inp = (yield X)
 
-            inp = input()
-            if inp.upper() == "YES":
-                return
-            else:
-                correct_pos, correct_num = map(int, inp.strip().split())
-                cond1 = [p[i][X[i]] for i in range(positions)]
-                cond2 = [beta[val][X.count(val)] for val in list(set(X))]
-                cond3 = And(
-                    functools.reduce(lambda x, y: x + y, cond1) == correct_pos,
-                    functools.reduce(lambda x, y: x + y, cond2) == correct_num,
-                )
-                C.append(cond3)
+            correct_pos, correct_num = inp
+
+            cond1 = [p[i][X[i]] for i in range(positions)]
+            cond2 = [beta[val][X.count(val)] for val in list(set(X))]
+            cond3 = And(
+                functools.reduce(lambda x, y: x + y, cond1) == correct_pos,
+                functools.reduce(lambda x, y: x + y, cond2) == correct_num,
+            )
+            C.append(cond3)
 
 
 def main():
