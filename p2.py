@@ -3,10 +3,10 @@ import argparse
 import logging
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler("p2.log")
-fh.setLevel(logging.DEBUG)
-logger.addHandler(fh)
+logger.setLevel(logging.ERROR)
+# fh = logging.FileHandler("p2.log")
+# fh.setLevel(logging.DEBUG)
+# logger.addHandler(fh)
 
 
 def main():

@@ -8,10 +8,10 @@ from collections import namedtuple
 import random
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler("Player2.log")
-fh.setLevel(logging.DEBUG)
-logger.addHandler(fh)
+logger.setLevel(logging.ERROR)
+# fh = logging.FileHandler("Player2.log")
+# fh.setLevel(logging.DEBUG)
+# logger.addHandler(fh)
 
 
 def binomial(p):
@@ -41,6 +41,7 @@ class ClauseHistory:
         self.hist_clause.append(self.usage_clause.pop())
 
     def additional_clauses(self, s, level):
+        self.hist_clause.sort(key=lambda x: x[1], reverse=True)
         for i in self.hist_clause.copy():
             if i[1] < 0.20:
                 self.hist_clause.remove(i)

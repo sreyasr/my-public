@@ -1,3 +1,5 @@
-input is in input.txt
+usage: python3 p2.py [-h] input_file
 </br>
-run Player.py to get output in out.log
+Run Player1.py to grenerate an output
+</br>
+There is a sample output in the out.txt

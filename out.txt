@@ -1,0 +1,92 @@
+P2: green green green green green green green green green green
+P1: 0 1  [INCORRECT]
+P2: green green green yellow green green yellow red yellow green
+P1: 0 5  [INCORRECT]
+P2: white blue white blue yellow white red yellow green yellow
+P1: 3 9
+P2: red yellow red white white blue white yellow green yellow
+P1: 2 8
+P2: white yellow red blue yellow yellow green white blue blue
+P1: 1 8
+P2: yellow white white green blue yellow blue yellow green white
+P1: 2 9
+P2: blue white yellow green white white red green blue yellow
+P1: 1 10
+P2: yellow blue white white red yellow blue green green white
+P1: 7 7  [INCORRECT]
+P2: blue white yellow green white white red green blue yellow
+P1: 1 10
+P2: white red blue green yellow blue yellow white green white
+P1: 1 10
+P2: green white white white yellow green blue yellow red blue
+P1: 0 1  [INCORRECT]
+P2: yellow green yellow red blue green red yellow green yellow
+P1: 2 6
+P2: white red yellow yellow yellow red yellow white red yellow
+P1: 2 5
+P2: blue yellow blue blue yellow yellow green yellow yellow yellow
+P1: 3 9  [INCORRECT]
+P2: yellow blue yellow green yellow yellow blue blue yellow blue
+P1: 1 3  [INCORRECT]
+P2: white white yellow white red red yellow red yellow yellow
+P1: 2 6
+P2: white blue green red white red red green white green
+P1: 3 7
+P2: white green white yellow white yellow white red green green
+P1: 1 8
+P2: blue blue green green red white white yellow white yellow
+P1: 1 6  [INCORRECT]
+P2: blue red blue green red red green green red green
+P1: 6 7  [INCORRECT]
+P2: blue red blue green white white green red white green
+P1: 1 8
+P2: red blue white white blue red red white blue white
+P1: 3 6
+P2: red green red blue yellow red white red red white
+P1: 4 6
+P2: red blue green green yellow blue white yellow white white
+P1: 5 10
+P2: yellow green green blue yellow blue red white white white
+P1: 3 9  [INCORRECT]
+P2: yellow blue white blue green red white red white green
+P1: 1 4  [INCORRECT]
+P2: green red white green yellow blue yellow blue white white
+P1: 5 6  [INCORRECT]
+P2: green white white green yellow red blue blue yellow white
+P1: 0 6  [INCORRECT]
+P2: red green green white green green white white white red
+P1: 3 6
+P2: red green red blue red blue red white green green
+P1: 1 6
+P2: green green green green red green red green red green
+P1: 1 3
+P2: blue white red white blue white white blue red red
+P1: 1 4  [INCORRECT]
+P2: white blue blue white white blue white white blue red
+P1: 2 6
+P2: blue blue blue red blue yellow yellow red white blue
+P1: 1 8  [INCORRECT]
+P2: red red white blue red blue blue blue blue blue
+P1: 1 7  [INCORRECT]
+P2: white blue blue yellow yellow blue yellow blue blue blue
+P1: 1 5
+P2: blue red yellow yellow white green green white yellow yellow
+P1: 1 3  [INCORRECT]
+P2: white blue white blue white blue blue blue white white
+P1: 4 5
+P2: white white white red white white red red red white
+P1: 1 4
+P2: green red red blue blue blue blue blue red red
+P1: 2 4
+P2: yellow green blue blue green green blue green white white
+P1: 1 2  [INCORRECT]
+P2: white white white blue red green blue yellow green yellow
+P1: 2 10
+P2: yellow yellow white red blue green green blue white white
+P1: 2 10
+P2: red green yellow green white white blue blue white yellow
+P1: 1 5  [INCORRECT]
+P2: red yellow green green white blue blue white white yellow
+P1: 1 10
+P2: green blue yellow blue green red white yellow white white
+P1: YES

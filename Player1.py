@@ -5,7 +5,7 @@ import random
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler("out.log")
+fh = logging.FileHandler("out.txt", mode="w")
 fh.setLevel(logging.DEBUG)
 logger.addHandler(fh)
 error = 0.4
