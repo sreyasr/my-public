@@ -13,7 +13,6 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("input_file", type=str, help="Input File")
     args = parser.parse_args()
-    positions = None
     colors = None
     with open(args.input_file, "r") as f:
         lines = f.readlines()
@@ -27,10 +26,10 @@ def main():
 
     player = Player2.player(positions, len(colors))
 
-    X = next(player)
+    guess = next(player)
 
     while True:
-        print(*list(map(lambda x: colors[x], X)), sep=" ")
+        print(*list(map(lambda x: colors[x], guess)), sep=" ")
 
         inp = None
 
@@ -46,7 +45,7 @@ def main():
         correct_pos, correct_num = list(map(int, inp.strip().split()))
         g = (correct_pos, correct_num)
         logger.info("g: %r, %r" % (correct_pos, correct_num))
-        X = player.send(g)
+        guess = player.send(g)
 
 
 if __name__ == "__main__":

@@ -3,7 +3,6 @@ from z3 import *
 import functools
 import argparse
 import logging
-from collections import namedtuple
 
 import random
 
@@ -88,13 +87,13 @@ def player(positions, colors):
         for j in range(positions + 1)
     ]
 
-    C = ClauseHistory()
+    clause_history = ClauseHistory()
     level = 0
-    C.append(And(*(cond0 + cond1 + cond2 + cond3)))
+    clause_history.append(And(*(cond0 + cond1 + cond2 + cond3)))
 
     s = Solver()
     s.set(unsat_core=True)
-    s.add(C[-1])
+    s.add(clause_history[-1])
 
     while True:
         if s.check() == unsat:
@@ -102,38 +101,37 @@ def player(positions, colors):
             unsat_core_level = list(
                 map(lambda x: int(str(x).split("_")[-1]), unsat_core)
             )
-            C.update_confidence(*unsat_core_level)
-            for i in range(len(C) - min(unsat_core_level)):
+            clause_history.update_confidence(*unsat_core_level)
+            for i in range(len(clause_history) - min(unsat_core_level)):
                 s.pop()
-                C.pop()
-            level = len(C) - 1
-            level = C.additional_clauses(s, level)
-            min_unsat_core = min(unsat_core_level)
-            if level != len(C) - 1:
-                logger.debug("ValueError: %s %s" % (level, len(C)))
+                clause_history.pop()
+            level = len(clause_history) - 1
+            level = clause_history.additional_clauses(s, level)
+            if level != len(clause_history) - 1:
+                logger.debug("ValueError: %s %s" % (level, len(clause_history)))
                 raise ValueError
             continue
         else:
-            X = [
+            guess = [
                 j
                 for i in range(positions)
                 for j in range(colors)
                 if s.model()[p[i][j]].as_long() == 1
             ]
-            inp = yield X
+            inp = yield guess
 
             correct_pos, correct_num = inp
 
-            cond1 = [p[i][X[i]] for i in range(positions)]
-            cond2 = [beta[val][X.count(val)] for val in list(set(X))]
+            cond1 = [p[i][guess[i]] for i in range(positions)]
+            cond2 = [beta[val][guess.count(val)] for val in list(set(guess))]
             cond3 = And(
                 functools.reduce(lambda x, y: x + y, cond1) == correct_pos,
                 functools.reduce(lambda x, y: x + y, cond2) == correct_num,
             )
             level += 1
-            C.append(cond3)
+            clause_history.append(cond3)
             s.push()
-            s.assert_and_track(C[-1], "C_%s" % level)
+            s.assert_and_track(clause_history[-1], "C_%s" % level)
 
 
 def main():
