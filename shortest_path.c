@@ -304,7 +304,7 @@ int main()
         for(int j = 0; j < NO_COLOUMNS; j++)
         {
             int pos = i*NO_COLOUMNS + j;
-            printf("%d[%d] ", pos, path_from[pos]);
+            printf("%02d[%02d] ", pos, path_from[pos]);
         }
         printf("\n");
     }
